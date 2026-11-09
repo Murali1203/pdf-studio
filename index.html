@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#12355b" />
+    <title>PDF Studio</title>
+    <link rel="stylesheet" href="src/styles.css" />
+    <style>
+      .compact-field { display: flex; align-items: center; gap: .45rem; color: #31516f; font-size: .82rem; font-weight: 800; }
+      .compact-field input { width: 4.5rem; min-height: 2.65rem; padding: .4rem; border: 1px solid #b7c9db; border-radius: 8px; color: #173f63; font: inherit; }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">PRIVATE · OFFLINE-FIRST · LOCAL FILES</p>
+          <h1>PDF <span>Studio</span></h1>
+          <p>Organise your PDFs on this device. No account, upload or internet connection is required.</p>
+        </div>
+        <div class="trust"><strong>Nothing leaves this laptop</strong><span>Files stay in your browser while you work.</span></div>
+      </header>
+
+      <p id="status" class="status" role="status">Start by choosing one or more PDFs.</p>
+
+      <nav class="tool-groups" aria-label="PDF Studio tool groups">
+        <button class="group active" type="button">1 Organise <small>Available now</small></button>
+        <button class="group active" type="button">2 Edit <small>Core tools available</small></button>
+        <button class="group active" type="button">3 Stamp <small>Core tools available</small></button>
+        <button class="group active" type="button">4 Convert <small>Image to PDF available</small></button>
+        <button class="group active" type="button">5 Finish <small>Core tools available</small></button>
+      </nav>
+
+      <section class="card">
+        <div class="section-heading"><div><p class="step">ORGANISE · FIRST BUILD SLICE</p><h2>Merge and reorder PDFs</h2><p>Choose PDFs, arrange them, then create one new downloadable file.</p></div><span id="file-count" class="badge">0 files</span></div>
+        <div class="actions">
+          <label class="file-button">Choose PDFs<input id="pdf-input" type="file" accept="application/pdf" multiple /></label>
+          <button id="clear-files" type="button" disabled>Clear list</button>
+          <button id="merge-files" class="primary" type="button" disabled>Merge and download</button>
+        </div>
+        <div id="drop-zone" class="drop-zone" tabindex="0"><strong>Drop PDF files here</strong><span>or use Choose PDFs above</span></div>
+        <div id="file-list" class="file-list" aria-live="polite"><p class="empty">No PDFs selected yet.</p></div>
+      </section>
+
+      <section class="card page-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">ORGANISE · PAGE TOOLS</p>
+            <h2>Arrange individual pages</h2>
+            <p>Move, rotate, duplicate or remove individual pages before exporting the merged PDF.</p>
+          </div>
+          <span id="page-count" class="badge">0 pages</span>
+        </div>
+        <p class="page-notice">These controls change only the local export plan. Your original PDFs are never overwritten.</p>
+        <div class="organise-actions" aria-label="Selected page actions">
+          <button id="extract-selected" type="button" disabled>Extract selected</button>
+          <button id="split-selected" type="button" disabled>Split at selected</button>
+          <button id="blank-after-selected" type="button" disabled>Insert blank after selected</button>
+          <label class="compact-field">Crop margin (pt)<input id="crop-margin" type="number" min="4" max="160" value="24" /></label>
+          <button id="crop-selected" type="button" disabled>Crop selected</button>
+        </div>
+        <p class="selection-help">Tick one or more pages to extract them, create split points, or insert a blank page after each chosen page.</p>
+        <div id="page-list" class="page-list" aria-live="polite"><p class="empty">Add a PDF to arrange its pages.</p></div>
+      </section>
+
+      <section class="card edit-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">EDIT · EXPORT-ONLY CHANGES</p>
+            <h2>Add page numbers, a watermark or a note</h2>
+            <p>These additions appear only in the file you download. The source PDFs remain unchanged.</p>
+          </div>
+          <span class="badge">Local editing</span>
+        </div>
+        <div class="edit-grid">
+          <label class="toggle-field"><input id="page-numbers" type="checkbox" /> Add page numbers</label>
+          <label>Page-number position
+            <select id="page-number-position"><option value="bottom-center">Bottom centre</option><option value="bottom-right">Bottom right</option><option value="top-right">Top right</option></select>
+          </label>
+          <label>Watermark text
+            <input id="watermark-text" type="text" maxlength="60" placeholder="e.g. Placement application" />
+          </label>
+          <label>Watermark opacity
+            <input id="watermark-opacity" type="range" min="0.05" max="0.5" step="0.05" value="0.15" />
+          </label>
+          <label class="wide-field">Note on every page
+            <input id="note-text" type="text" maxlength="100" placeholder="e.g. Confidential — submitted by Murali" />
+          </label>
+          <label class="wide-field">Optional image stamp (PNG or JPEG)
+            <input id="image-stamp" type="file" accept="image/png,image/jpeg" />
+          </label>
+        </div>
+        <p id="edit-summary" class="selection-help">No export-only edits selected.</p>
+      </section>
+
+      <section class="card edit-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">EDIT · DRAW, HIGHLIGHT AND WHITEOUT</p>
+            <h2>Mark selected pages</h2>
+            <p>Tick pages above, set a relative position, then add a real PDF shape. Coordinates are measured from the top-left of each page.</p>
+          </div>
+          <span id="overlay-count" class="badge">0 marks</span>
+        </div>
+        <div class="edit-grid">
+          <label>Mark type
+            <select id="overlay-type"><option value="rectangle">Outline rectangle</option><option value="line">Line</option><option value="highlight">Highlight</option><option value="whiteout">Whiteout</option></select>
+          </label>
+          <label>Colour
+            <input id="overlay-colour" type="color" value="#24736f" />
+          </label>
+          <label>Left (%)<input id="overlay-x" type="number" min="0" max="95" value="15" /></label>
+          <label>Top (%)<input id="overlay-y" type="number" min="0" max="95" value="15" /></label>
+          <label>Width (%)<input id="overlay-width" type="number" min="1" max="100" value="55" /></label>
+          <label>Height (%)<input id="overlay-height" type="number" min="1" max="100" value="12" /></label>
+        </div>
+        <div class="organise-actions"><button id="add-overlay" type="button" disabled>Add mark to selected</button><button id="clear-overlays" type="button" disabled>Clear marks</button></div>
+        <p class="selection-help">Whiteout is for visually covering harmless content. It is not the secure Redact tool.</p>
+      </section>
+
+      <section class="card sensitive-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">EDIT · SECURE REDACTION</p>
+            <h2>Remove sensitive areas from selected pages</h2>
+            <p>Secure redaction creates a flattened PDF: the redacted area, and all other text on the exported pages, cannot be selected or searched.</p>
+          </div>
+          <span id="redaction-count" class="badge">0 redactions</span>
+        </div>
+        <div class="edit-grid">
+          <label>Left (%)<input id="redact-x" type="number" min="0" max="95" value="15" /></label>
+          <label>Top (%)<input id="redact-y" type="number" min="0" max="95" value="15" /></label>
+          <label>Width (%)<input id="redact-width" type="number" min="1" max="100" value="55" /></label>
+          <label>Height (%)<input id="redact-height" type="number" min="1" max="100" value="12" /></label>
+        </div>
+        <div class="organise-actions"><button id="add-redaction" type="button" disabled>Add secure redaction</button><button id="clear-redactions" type="button" disabled>Clear redactions</button></div>
+        <p class="selection-help"><strong>Important:</strong> this safety-first export flattens every page to an image, so use it only when searchability is not needed.</p>
+      </section>
+
+      <section class="card edit-card">
+        <div class="section-heading"><div><p class="step">EDIT · FILL FORMS</p><h2>Fill a PDF form locally</h2><p>Choose an ordinary fillable PDF. Its detected fields will appear below.</p></div><span id="form-field-count" class="badge">0 fields</span></div>
+        <div class="actions"><label class="file-button">Choose fillable PDF<input id="form-input" type="file" accept="application/pdf" /></label><button id="save-filled-form" class="primary" type="button" disabled>Save filled form</button></div>
+        <div id="form-fields" class="edit-grid"><p class="empty">No form loaded.</p></div>
+      </section>
+
+      <section class="card stamp-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">STAMP · EXPORT-ONLY MARKS</p>
+            <h2>Add a date, label or signature</h2>
+            <p>Choose a visible stamp for every page in the downloaded copy.</p>
+          </div>
+          <span class="badge">Local only</span>
+        </div>
+        <div class="edit-grid">
+          <label class="toggle-field"><input id="date-stamp-enabled" type="checkbox" /> Add a date stamp</label>
+          <label>Date to display
+            <input id="date-stamp-value" type="date" />
+          </label>
+          <label>Custom stamp text
+            <input id="custom-stamp-text" type="text" maxlength="32" placeholder="e.g. VERIFIED" />
+          </label>
+          <label>Stamp position
+            <select id="stamp-position"><option value="top-left">Top left</option><option value="top-right">Top right</option><option value="bottom-left">Bottom left</option><option value="bottom-right">Bottom right</option></select>
+          </label>
+          <label class="wide-field">Signature image (PNG or JPEG)
+            <input id="signature-stamp" type="file" accept="image/png,image/jpeg" />
+          </label>
+        </div>
+        <p id="stamp-summary" class="selection-help">No stamps selected.</p>
+      </section>
+
+      <section class="card finish-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">FINISH · OPTIMISE AND EXPORT</p>
+            <h2>Check file size before you download</h2>
+            <p>PDF Studio keeps the source files untouched and reports the final size after each export.</p>
+          </div>
+          <span class="badge">No upload</span>
+        </div>
+        <div class="edit-grid">
+          <label class="toggle-field"><input id="optimise-export" type="checkbox" checked /> Optimise PDF structure on export</label>
+          <label>Final filename
+            <input id="export-name" type="text" value="pdf-studio-organised" maxlength="60" />
+          </label>
+        </div>
+        <div class="size-report" aria-live="polite">
+          <div><span>Selected source PDFs</span><strong id="input-size">—</strong></div>
+          <div><span>Last exported PDF</span><strong id="output-size">—</strong></div>
+          <div><span>Size difference</span><strong id="size-change">Export a PDF to compare</strong></div>
+        </div>
+        <p id="finish-summary" class="selection-help">Optimisation removes unnecessary PDF structure where possible; the amount saved depends on the source PDF.</p>
+        <div class="edit-grid">
+          <label class="toggle-field"><input id="add-details" type="checkbox" /> Add document details</label>
+          <label class="toggle-field"><input id="remove-details" type="checkbox" /> Remove document details</label>
+          <label>Document title<input id="detail-title" type="text" maxlength="80" placeholder="e.g. Semester 4 marksheet pack" /></label>
+          <label>Author<input id="detail-author" type="text" maxlength="80" placeholder="e.g. Murali" /></label>
+          <label class="wide-field">Subject<input id="detail-subject" type="text" maxlength="120" placeholder="e.g. Placement application documents" /></label>
+        </div>
+        <p id="details-summary" class="selection-help">Source document details are not copied into a new PDF export.</p>
+      </section>
+
+      <section class="card finish-card">
+        <div class="section-heading">
+          <div><p class="step">FINISH · COMPARE TWO PDFS</p><h2>Compare files locally</h2><p>Check page count, file size and basic document details before submitting.</p></div>
+          <span class="badge">No upload</span>
+        </div>
+        <div class="edit-grid">
+          <label>First PDF<input id="compare-first" type="file" accept="application/pdf" /></label>
+          <label>Second PDF<input id="compare-second" type="file" accept="application/pdf" /></label>
+        </div>
+        <div class="organise-actions"><button id="compare-pdfs" type="button" disabled>Compare PDFs</button></div>
+        <div id="compare-result" class="size-report" aria-live="polite"><p class="empty">Choose two PDFs to compare.</p></div>
+      </section>
+
+      <section class="card convert-card">
+        <div class="section-heading">
+          <div>
+            <p class="step">CONVERT · IMAGE TO PDF</p>
+            <h2>Turn photos into one PDF</h2>
+            <p>Select PNG or JPEG images, set their order, then create a local A4 PDF.</p>
+          </div>
+          <span id="image-count" class="badge">0 images</span>
+        </div>
+        <div class="actions">
+          <label class="file-button">Choose images<input id="image-to-pdf-input" type="file" accept="image/png,image/jpeg" multiple /></label>
+          <button id="clear-images" type="button" disabled>Clear images</button>
+          <button id="create-image-pdf" class="primary" type="button" disabled>Create PDF</button>
+        </div>
+        <div id="image-list" class="file-list" aria-live="polite"><p class="empty">No images selected yet.</p></div>
+        <div class="edit-grid">
+          <label>PDF to text<input id="pdf-to-text-input" type="file" accept="application/pdf" /></label>
+          <label>PDF to images<input id="pdf-to-images-input" type="file" accept="application/pdf" /></label>
+        </div>
+        <div class="organise-actions"><button id="export-text" type="button" disabled>Download text</button><button id="export-images" type="button" disabled>Download page images</button></div>
+        <p class="selection-help">PDF-to-image downloads one PNG per page. Large PDFs can take time and may produce many downloads.</p>
+      </section>
+
+      <section class="card guide">
+        <h2>How this works</h2>
+        <ol>
+          <li>Select PDF files from your device.</li>
+          <li>Use the page controls to set the final page order.</li>
+          <li>Click Merge and download. The new PDF opens in any standard PDF reader.</li>
+        </ol>
+        <p><strong>Next build steps:</strong> the remaining Organise tool will be page-range selection and export refinements, then the Edit group begins.</p>
+      </section>
+    </main>
+    <script src="vendor/pdf-lib.min.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
