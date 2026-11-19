@@ -21,6 +21,10 @@
         </div>
         <div class="trust"><strong>Nothing leaves this laptop</strong><span>Files stay in your browser while you work.</span></div>
       </header>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="#workspace">PDF tools</a>
+          <a href="#blog">Blog</a>
+        </nav>
 
       <p id="status" class="status" role="status">Start by choosing one or more PDFs.</p>
 
@@ -31,6 +35,8 @@
         <button class="group active" type="button">4 Convert <small>Image to PDF available</small></button>
         <button class="group active" type="button">5 Finish <small>Core tools available</small></button>
       </nav>
+
+      <div id="workspace" class="workspace-anchor" aria-hidden="true"></div>
 
       <section class="card">
         <div class="section-heading"><div><p class="step">ORGANISE · FIRST BUILD SLICE</p><h2>Merge and reorder PDFs</h2><p>Choose PDFs, arrange them, then create one new downloadable file.</p></div><span id="file-count" class="badge">0 files</span></div>
@@ -236,6 +242,51 @@
         </div>
         <div class="organise-actions"><button id="export-text" type="button" disabled>Download text</button><button id="export-images" type="button" disabled>Download page images</button></div>
         <p class="selection-help">PDF-to-image downloads one PNG per page. Large PDFs can take time and may produce many downloads.</p>
+      </section>
+
+
+      <section id="blog" class="blog" aria-labelledby="blog-title">
+        <div class="blog-intro">
+          <p class="eyebrow">PDF STUDIO JOURNAL</p>
+          <h2 id="blog-title">Documents, data and responsible analytics</h2>
+          <p>Three short articles connecting the everyday documents we handle to core Big Data Management ideas: variety, data quality, privacy, provenance and usable structure.</p>
+        </div>
+
+        <article class="blog-post" id="pdfs-to-data">
+          <p class="blog-kicker">ARTICLE 01 · DATA PIPELINES</p>
+          <h3>From PDFs to Data: How Digital Documents Connect to Big Data Analytics</h3>
+          <p>A PDF is designed to preserve how a document looks, not to behave like a tidy database row. That makes invoices, marksheets, reports and scanned forms a useful example of <em>variety</em>: information can be text, images, tables, form fields and metadata in the same file. At scale, this variety is exactly why document collections need a deliberate data-management pipeline.</p>
+          <p>PDF Studio illustrates the first, careful stage of that pipeline. It lets a person arrange pages, merge local PDFs, fill an existing form, add export-only marks, and download text or page images—all in the browser. The text download can be a practical starting point for inspection, but it is not automatically a clean dataset. Headings, repeated page furniture and table columns may need parsing, validation and human review before they become analytics-ready records.</p>
+          <div class="blog-example"><strong>Example:</strong> A college could receive thousands of application PDFs. A responsible workflow would keep the original file, record its source and processing date, extract candidate fields into a separate table, validate roll-number formats, and flag uncertain values for review. Analysts then query the curated table, while the original document remains available for audit.</div>
+          <p>This separation matters. Big Data is not simply “a lot of files”; it is the challenge of making large, fast or varied data usable with suitable architecture. NIST’s terminology highlights volume, velocity and variety as pressures on analytics systems. For document work, data quality and provenance—the record of where each value came from—are what make later dashboards trustworthy.</p>
+          <p class="sources">Further reading: <a href="https://www.nist.gov/publications/nist-big-data-interoperability-framework-volume-1-definitions" target="_blank" rel="noopener noreferrer">NIST Big Data Interoperability Framework: definitions</a> · <a href="https://www.w3.org/TR/tabular-data-model/" target="_blank" rel="noopener noreferrer">W3C model for tabular data and metadata</a></p>
+        </article>
+
+        <article class="blog-post" id="privacy-offline">
+          <p class="blog-kicker">ARTICLE 02 · PRIVACY BY DESIGN</p>
+          <h3>Data Privacy and Offline-First Applications</h3>
+          <p>“Offline-first” does not mean that every privacy problem disappears. It does mean that an application can avoid one important risk: sending a document to a server merely to perform a routine task. PDF Studio’s workflow is local by design: files are selected from the device, processed in the browser and downloaded by the user. The app states that no account, upload or internet connection is required.</p>
+          <p>That is a meaningful data-minimisation choice for documents containing personal details, such as applications or signed forms. If a file never leaves the device during a routine merge or export, there is no upload copy to secure, retain or share for that operation. The benefit is especially clear when the job is small and there is no need to collaborate online.</p>
+          <p>Still, local processing has boundaries. A downloaded file can contain sensitive content; a shared computer, browser extension, lost device or weak access controls can still create exposure. PDF Studio’s secure-redaction option also makes a careful trade-off: it flattens exported pages so their text cannot be selected or searched. That can reduce recoverability of the visible content, but it also removes searchability. Privacy engineering is therefore about informed choices, not a single “safe” switch.</p>
+          <div class="blog-example"><strong>Example:</strong> Before submitting a document pack, a student can create a local redacted copy for a limited audience while retaining the original privately. The checklist is broader than redaction: confirm the correct recipient, remove unneeded document details where appropriate, and keep only the copies required by the task.</div>
+          <p>The NIST Privacy Framework frames privacy risk management as a way to help organisations identify and manage privacy risks while building products and services. Offline-first processing is one design control within that wider discipline: minimise collection and transfer first, then still manage access, retention and disclosure.</p>
+          <p class="sources">Further reading: <a href="https://www.nist.gov/privacy-framework" target="_blank" rel="noopener noreferrer">NIST Privacy Framework</a> · <a href="https://www.nist.gov/privacy-framework/nist-privacy-framework-and-cybersecurity-framework" target="_blank" rel="noopener noreferrer">NIST on privacy and cybersecurity risk management</a></p>
+        </article>
+
+        <article class="blog-post" id="analytics-ready">
+          <p class="blog-kicker">ARTICLE 03 · DATA QUALITY</p>
+          <h3>Turning Unstructured Documents into Analytics-Ready Data</h3>
+          <p>Analytics-ready data is data that a defined question can use reliably. A folder of PDFs may contain valuable information, but it is not yet a dataset with explicit fields, consistent formats or known quality. The work of conversion is less about pressing one button and more about designing a repeatable path from document to governed record.</p>
+          <ol class="blog-steps">
+            <li><strong>Define the question and fields.</strong> For “Which departments receive the most applications?”, decide that department, date, programme and application ID are fields—not just pieces of text.</li>
+            <li><strong>Preserve the source and capture lineage.</strong> Keep an identifier for the original document and record when and how a value was extracted. This supports correction and audit.</li>
+            <li><strong>Extract, standardise and validate.</strong> Text downloads and page images help inspection; OCR or structured extraction may be needed for scans. Convert dates to one format, use reference lists for programme names, and flag missing or ambiguous values.</li>
+            <li><strong>Publish a documented table.</strong> Give every column a definition, data type, allowed values and owner. W3C’s tabular-data model shows how metadata can describe columns and their meaning alongside tabular data.</li>
+          </ol>
+          <p>Consider a stack of lab reports. “Experiment date” may appear as <code>3/4/26</code>, <code>03-Apr-2026</code> or handwritten text. Treating these strings as ready-made dates produces misleading groupings. A quality rule can standardise confirmed values to an ISO date, preserve the raw text for traceability and route unclear entries to review. The same principle applies to duplicate files, inconsistent units and missing IDs.</p>
+          <p>PDF Studio is intentionally positioned before the warehouse or dashboard: it helps prepare and inspect local document copies, and can export PDF text or page images. It does not claim to perform OCR, classify documents, create a database or run analytics. Recognising that boundary is good data management—the tool fits a wider pipeline rather than pretending to replace it.</p>
+          <p class="sources">Further reading: <a href="https://www.w3.org/TR/tabular-data-model/" target="_blank" rel="noopener noreferrer">W3C: Model for Tabular Data and Metadata on the Web</a> · <a href="https://www.nist.gov/publications/nist-big-data-interoperability-framework-volume-1-definitions" target="_blank" rel="noopener noreferrer">NIST Big Data definitions</a></p>
+        </article>
       </section>
 
       <section class="card guide">
